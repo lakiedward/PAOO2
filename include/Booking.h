@@ -1,29 +1,33 @@
-// Booking.h
 #ifndef BOOKING_H
 #define BOOKING_H
 
 #include <string>
+#include <optional>
 
+// Clasa Booking gestionează informații despre o rezervare
 class Booking {
 private:
-    std::string* customerName; // Numele clientului (alocat dinamic)
-    int nights;                // Numărul de nopți rezervate
+    std::string* customerName;    // Alocat dinamic pentru demonstrarea eliberării heap-ului
+    int nights;                   // Număr de nopți
+    std::optional<int> optionalNights; // Exemplu pentru inițializare sigură (Item 4)
 
 public:
-    // Constructor
-    Booking(const std::string& name, int nights);
+    Booking(const std::string& name, int nights); // Constructor
+    Booking(); // Constructor implicit pentru Item 4
 
-    // Destructor
-    ~Booking();
+    ~Booking(); // Destructor
 
-    // Copy constructor
-    Booking(const Booking& other);
+    Booking(const Booking& other); // Copy constructor
+    Booking(Booking&& other) noexcept; // Move constructor
 
-    // Move constructor
-    Booking(Booking&& other) noexcept;
+    void printDetails() const; // Afișarea detaliilor rezervării
+    void setOptionalNights(int n); // Setăm valoarea membrului optionalNights
+    void printOptionalNights() const; // Afișăm optionalNights pentru demonstrarea siguranței
 
-    // Metodă pentru afișarea detaliilor rezervării
-    void printDetails() const;
+private:
+    // Dezactivăm copierea și mutarea automată pentru Booking fără constructori (Item 6)
+    Booking& operator=(const Booking&) = delete;
+    Booking& operator=(Booking&&) = delete;
 };
 
 #endif // BOOKING_H

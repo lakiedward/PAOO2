@@ -1,27 +1,26 @@
-// main.cpp
 #include "Booking.h"
+#include "SilentGenerated.h"
+#include "NoCopyOrMove.h"
 #include <iostream>
-#include <utility>
-
-void processBooking(Booking b) {
-    std::cout << "Processing booking:" << std::endl;
-    b.printDetails();
-}
 
 int main() {
-    // Inițializarea membrilor în constructor
-    Booking booking1("John Doe", 3);
-    std::cout << "Initial booking:" << std::endl;
-    booking1.printDetails();
+    // Demonstrăm Item 4: Inițializare sigură
+    Booking safeBooking;
+    safeBooking.printOptionalNights();
+    safeBooking.setOptionalNights(5);
+    safeBooking.printOptionalNights();
 
-    // Suprascrierea copy constructor-ului
-    processBooking(booking1);  // Copy constructor este apelat aici
+    // Demonstrăm Item 5: Funcții generate automat
+    SilentGenerated obj1; // Default constructor
+    SilentGenerated obj2 = obj1; // Copy constructor
+    SilentGenerated obj3;
+    obj3 = obj2; // Copy assignment operator
 
-    // Crearea unui obiect folosind move constructor
-    Booking booking2 = std::move(booking1);  // Move constructor este apelat aici
-    std::cout << "After moving booking1 to booking2:" << std::endl;
-    booking2.printDetails();
-    booking1.printDetails(); // Verificăm că booking1 este gol după mutare
+    // Demonstrăm Item 6: Dezactivare funcții generate
+    NoCopyOrMove obj;
+    obj.doSomething();
+    // NoCopyOrMove obj2 = obj; // Eroare - Copy constructor dezactivat
+    // NoCopyOrMove obj3 = std::move(obj); // Eroare - Move constructor dezactivat
 
     return 0;
 }
